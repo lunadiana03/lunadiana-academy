@@ -219,6 +219,22 @@ main { padding-right: var(--rail); }
 .step b { display: block; font-family: 'Shippori Mincho B1', serif; font-size: 18px; color: var(--ink); margin: 6px 0 8px; }
 .step p { margin: 0; font-size: 13.5px; color: var(--sub); white-space: pre-line; }
 
+/* 出願（オープンチャット） */
+.apply { display: grid; grid-template-columns: 1.35fr 1fr; border-radius: 10px; overflow: hidden; box-shadow: 0 18px 44px rgba(31,52,120,.16); }
+.apply-main { position: relative; padding: 48px 46px; color: #fff; background: radial-gradient(ellipse at 85% 10%, rgba(255,255,255,.12), transparent 55%), linear-gradient(150deg, var(--navy3), var(--navy) 70%); }
+.apply-main::after { content: ''; position: absolute; right: 26px; top: 26px; width: 26px; height: 26px; background: var(--gold2); clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%); animation: twinkle 3s ease-in-out infinite; }
+.apply-en { font-family: 'Cormorant Garamond', serif; font-weight: 700; letter-spacing: .4em; font-size: 13px; color: var(--gold2); }
+.apply-main h3 { margin: 8px 0 16px; font-family: 'Shippori Mincho B1', serif; font-size: 26px; line-height: 1.6; letter-spacing: .08em; }
+.apply-main p { margin: 0 0 30px; color: #dfe5f6; font-size: 14.5px; }
+.apply-btn { padding: 16px 30px; }
+.apply-check { padding: 44px 38px; background: var(--paper); }
+.apply-check b { display: flex; align-items: center; gap: 8px; font-family: 'Shippori Mincho B1', serif; color: var(--ink); font-size: 18px; margin-bottom: 16px; }
+.apply-check b .mi { color: var(--gold); }
+.apply-check ol { list-style: none; margin: 0; padding: 0; counter-reset: ck; }
+.apply-check li { counter-increment: ck; position: relative; padding: 14px 0 14px 46px; border-bottom: 1px dashed var(--line); font-size: 14.5px; color: var(--text); }
+.apply-check li::before { content: counter(ck); position: absolute; left: 0; top: 12px; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 16px; color: var(--navy2); box-shadow: inset 0 0 0 1px var(--navy3); }
+
 /* 進路実績 */
 .career { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
 .career .card { padding: 26px 26px 24px; }
@@ -329,6 +345,12 @@ main { padding-right: var(--rail); }
   .table th, .table td { display: block; width: 100%; padding: 12px 16px; }
   .table th { border-bottom: 0; }
   .stats-band { grid-template-columns: 1fr; }
+  .apply { grid-template-columns: 1fr; }
+  .apply-main { padding: 36px 22px; }
+  .apply-main h3 { font-size: 21px; }
+  .apply-btn { width: 100%; justify-content: center; padding: 15px 10px; font-size: 14px; gap: 6px; letter-spacing: .04em; }
+  .toast { bottom: 84px; max-width: calc(100% - 32px); }
+  .apply-check { padding: 30px 22px; }
   .qa-item { padding: 24px 18px 24px; }
   .qa-q, .qa-a { grid-template-columns: 36px 1fr; gap: 12px; }
   .qa-item .mark { width: 36px; height: 36px; font-size: 21px; }

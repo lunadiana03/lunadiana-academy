@@ -7,6 +7,7 @@
 const LINKS = {
   request: '',  // 資料請求（リットリンク）
   contact: 'https://marshmallow-qa.com/4xbheq5peha9k4g?t=NCLk2k',  // お問い合わせ（マシュマロ）
+  openchat: '', // 出願（公式オープンチャット）
   notebook: 'https://lunadiana03.github.io/LunaDianaSchool/' // レッスン手帳
 };
 
@@ -44,7 +45,7 @@ const C = {
   },
   news: [
     { id: 'n3', date: '2026-10-12', cat: 'お知らせ', title: '公式サイトを公開しました', body: 'ルナディアーナ学園の公式サイトを公開しました。\n学園のこと、4つの組のこと、毎日の学園生活などをご紹介していきます。どうぞよろしくお願いいたします。' },
-    { id: 'n2', date: '2026-10-01', cat: '入学', title: '新入生の募集を受け付けています', body: '現在、新入生を随時募集しています。\n募集要項は「入学案内」ページをご覧ください。入学願書はレッスン手帳から提出できます。' },
+    { id: 'n2', date: '2026-10-01', cat: '入学', title: '新入生の募集を受け付けています', body: '現在、新入生を随時募集しています。\n募集要項は「入学案内」ページをご覧ください。出願は公式オープンチャットから受け付けています。' },
     { id: 'n1', date: '2026-09-20', cat: '学園生活', title: 'レッスン手帳がリニューアルしました', body: '毎日のレッスン記録をつける「レッスン手帳」がリニューアルしました。\n組ごとのランキングやカレンダーも使えます。' }
   ],
   about: {
@@ -122,16 +123,23 @@ const C = {
     lead: 'ルナディアーナ学園では、夢に向かってがんばるあなたを待っています。',
     table: [
       { k: '募集する人', v: 'アイドル・俳優・ダンサー・モデルなど、芸能の道を目指す人' },
-      { k: '所属', v: '花の歌組 / 鳥の劇組 / 風の舞組 / 月の美組\n（入学願書で希望の組を選べます）' },
+      { k: '所属', v: '花の歌組 / 鳥の劇組 / 風の舞組 / 月の美組\n（出願のときに希望の組をお伝えください）' },
       { k: '募集期間', v: '随時' },
-      { k: '出願方法', v: 'レッスン手帳の「入学願書」から提出してください' },
-      { k: '選考', v: '願書の内容をもとに、学園で確認します' }
+      { k: '出願方法', v: '公式オープンチャットに参加し、申請してください\n（このページの「出願はこちら」から参加できます）' },
+      { k: '選考', v: '申請の内容をもとに、学園で確認します' }
     ],
     steps: [
-      { title: '資料請求', text: 'まずは学園のことを知ってください。' },
-      { title: '入学願書の提出', text: 'レッスン手帳から\n願書を送ります。' },
+      { title: '資料請求', text: 'まずは学園のことを\n知ってください。' },
+      { title: 'オープンチャットで出願', text: '公式オープンチャットに参加して\n申請します。' },
       { title: '組の決定', text: '希望をもとに\n所属する組が決まります。' },
       { title: '入学', text: 'レッスン手帳で\n毎日のレッスンがはじまります。' }
+    ],
+    applyTitle: '出願は、公式オープンチャットから。',
+    applyText: 'ルナディアーナ学園の出願は、LINEの公式オープンチャットで受け付けています。\n下のボタンから参加して、申請してください。',
+    checklist: [
+      '募集要項と入学までの流れを確認する',
+      '気になる組を決めておく（迷っていても大丈夫です）',
+      'オープンチャットに参加して、案内にそって申請する'
     ],
     note: 'わからないことがあれば、お問い合わせ（マシュマロ）からお気軽にどうぞ。'
   },
@@ -163,7 +171,7 @@ function openLink(kind, e) {
   if (e) e.preventDefault();
   const url = safeUrl(LINKS[kind]);
   if (url) window.open(url, '_blank', 'noopener');
-  else toast((kind === 'request' ? '資料請求' : 'お問い合わせ') + 'は準備中です');
+  else toast(({ request: '資料請求', contact: 'お問い合わせ', openchat: '出願の受付' }[kind] || 'このリンク') + 'は準備中です');
 }
 function toggleMenu(force) {
   const open = typeof force === 'boolean' ? force : !document.body.classList.contains('menu-open');
@@ -239,7 +247,7 @@ const RENDER = {
     return `
       <section class="hero">
         <div class="hero-visual"><div class="hero-frame"><img class="pic" src="img/hero.jpg" alt="${esc(s.name)}"><div class="sparkles">${spark}</div></div>
-        <a class="entry-badge" href="admission.html" aria-label="入学案内"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><path id="badge-c" d="M60,60 m-49,0 a49,49 0 1,1 98,0 a49,49 0 1,1 -98,0"/></defs><text><textPath href="#badge-c">NOW ENTRY · ADMISSION OPEN · </textPath></text></svg><span class="c">${star()}新入生<br>募集中</span></a></div>
+        <a class="entry-badge" href="admission.html#apply" aria-label="入学案内"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><path id="badge-c" d="M60,60 m-49,0 a49,49 0 1,1 98,0 a49,49 0 1,1 -98,0"/></defs><text><textPath href="#badge-c">NOW ENTRY · ADMISSION OPEN · </textPath></text></svg><span class="c">${star()}新入生<br>募集中</span></a></div>
         <div class="hero-side"><span>${esc(s.heroSub)}</span></div>
         <div class="big"><b>LUNADIANA</b></div>
         ${latest ? `<a class="hero-news" href="news.html?id=${encodeURIComponent(latest.id)}"><em>NEWS</em><time>${fmtDate(latest.date)}</time><span>${esc(latest.title)}</span>${mi('chevron_right')}</a>` : ''}
@@ -349,7 +357,7 @@ const RENDER = {
   },
 
   admission() {
-    const a = C.admission, url = safeUrl(LINKS.notebook);
+    const a = C.admission, oc = safeUrl(LINKS.openchat);
     return pageHero('admission') + `
       <section class="section"><div class="wrap">
         ${secHead('GUIDELINES', '募集要項')}
@@ -359,9 +367,23 @@ const RENDER = {
       <section class="section alt"><div class="wrap">
         ${secHead('FLOW', '入学までの流れ')}
         <div class="steps">${(a.steps || []).map(s => `<div class="step reveal"><b>${esc(s.title)}</b><p>${esc(s.text)}</p></div>`).join('')}</div>
-        <p class="lead reveal" style="margin:44px 0 30px">${esc(a.note)}</p>
+      </div></section>
+      <section class="section" id="apply"><div class="wrap">
+        ${secHead('APPLICATION', '出願はこちら')}
+        <div class="apply reveal">
+          <div class="apply-main">
+            <span class="apply-en">WEB ENTRY</span>
+            <h3>${esc(a.applyTitle)}</h3>
+            <p class="prose">${esc(a.applyText)}</p>
+            <a class="btn gold apply-btn" href="${esc(oc || '#')}"${oc ? ' target="_blank" rel="noopener"' : ` onclick="openLink('openchat', event)"`}>${mi('forum')}オープンチャットで出願する${mi('open_in_new')}</a>
+          </div>
+          <div class="apply-check">
+            <b>${mi('checklist')}出願前の確認</b>
+            <ol>${(a.checklist || []).map(t => `<li>${esc(t)}</li>`).join('')}</ol>
+          </div>
+        </div>
+        <p class="lead reveal" style="margin:48px 0 26px">${esc(a.note)}</p>
         <p class="center reveal" style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center">
-          ${url ? `<a class="btn gold" href="${esc(url)}" target="_blank" rel="noopener">入学願書（レッスン手帳）${mi('open_in_new')}</a>` : ''}
           <a class="btn" href="#" onclick="openLink('request', event)">資料請求${mi('arrow_forward')}</a>
           <a class="btn line" href="contact.html">お問い合わせ${mi('mail')}</a>
         </p>
