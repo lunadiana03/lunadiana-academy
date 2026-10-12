@@ -229,7 +229,7 @@ function timeline(list) { return `<ol class="timeline reveal">${(list || []).map
 
 const RENDER = {
   home() {
-    const s = C.site, h = C.home;
+    const s = C.site, h = C.home, latest = newsSorted()[0];
     const spark = [[8, 18, 18], [16, 62, 12], [26, 30, 22], [72, 22, 16], [84, 56, 20], [92, 30, 12], [60, 12, 10], [38, 70, 10]]
       .map(([x, y, z], i) => `<i class="star" style="left:${x}%;top:${y}%;font-size:${z}px;animation-delay:${i * .4}s"></i>`).join('');
     const links = [
@@ -237,8 +237,14 @@ const RENDER = {
       ['career.html', 'workspace_premium', '進路実績', 'CAREER'], ['admission.html', 'how_to_reg', '入学案内', 'ADMISSION']
     ];
     return `
-      <section class="hero"><img class="pic" src="img/hero.jpg" alt="${esc(s.name)}"><div class="sparkles">${spark}</div>
-        <div class="big"><b>LUNADIANA</b><span>${esc(s.heroSub)}</span></div><i class="scroll"></i></section>
+      <section class="hero">
+        <div class="hero-visual"><div class="hero-frame"><img class="pic" src="img/hero.jpg" alt="${esc(s.name)}"><div class="sparkles">${spark}</div></div>
+        <a class="entry-badge" href="admission.html" aria-label="入学案内"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><path id="badge-c" d="M60,60 m-49,0 a49,49 0 1,1 98,0 a49,49 0 1,1 -98,0"/></defs><text><textPath href="#badge-c">NOW ENTRY · ADMISSION OPEN · </textPath></text></svg><span class="c">${star()}新入生<br>募集中</span></a></div>
+        <div class="hero-side"><span>${esc(s.heroSub)}</span></div>
+        <div class="big"><b>LUNADIANA</b></div>
+        ${latest ? `<a class="hero-news" href="news.html?id=${encodeURIComponent(latest.id)}"><em>NEWS</em><time>${fmtDate(latest.date)}</time><span>${esc(latest.title)}</span>${mi('chevron_right')}</a>` : ''}
+        <i class="scroll"><b>SCROLL</b><i></i></i>
+      </section>
       <section class="section"><div class="wrap">
         ${secHead('ABOUT US', s.name + 'とは')}
         <p class="lead reveal" style="font-size:22px;font-weight:700;margin-bottom:24px">${esc(h.introTitle)}</p>
@@ -408,6 +414,22 @@ function setupReveal() {
   els.forEach(el => revealObs.observe(el));
 }
 
+// ---------- 入ったときのオープニング（トップを開いたとき、1回の訪問につき1度だけ） ----------
+function showOpening() {
+  let seen = false;
+  try { seen = sessionStorage.getItem('lda_opened') === '1'; sessionStorage.setItem('lda_opened', '1'); } catch (e) {}
+  if (seen || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.documentElement.style.setProperty('--hd', '2.5s');
+  const sp = [[14, 22, 14], [82, 18, 18], [24, 74, 10], [70, 70, 12], [50, 12, 9], [90, 50, 9]]
+    .map(([x, y, z], i) => `<i class="star" style="left:${x}%;top:${y}%;font-size:${z}px;animation-delay:${i * .35}s"></i>`).join('');
+  const el = document.createElement('div'); el.className = 'opening';
+  el.innerHTML = `<div class="op-sp">${sp}</div><div class="op-in"><img src="img/emblem.png" alt=""><i class="op-line"></i><small>${esc(C.site.kicker)}</small><b>${esc(C.site.name)}</b><span class="op-en">${esc(C.site.en)}</span></div>`;
+  document.body.appendChild(el);
+  const close = () => { if (el.classList.contains('done')) return; el.classList.add('done'); setTimeout(() => el.remove(), 1100); };
+  el.addEventListener('click', () => { document.documentElement.style.setProperty('--hd', '0s'); close(); });
+  setTimeout(close, 2700);
+}
+
 // ---------- 起動 ----------
 function renderPage() {
   const app = document.getElementById('app');
@@ -432,5 +454,5 @@ document.addEventListener('click', e => {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') toggleMenu(false); });
 document.addEventListener('click', e => { if (document.body.classList.contains('menu-open') && e.target.closest('.menu-list a')) toggleMenu(false); });
 if (document.getElementById('app')) {
-  document.addEventListener('DOMContentLoaded', renderPage);
+  document.addEventListener('DOMContentLoaded', () => { if (document.getElementById('app').dataset.page === 'home') showOpening(); renderPage(); });
 }
