@@ -226,6 +226,10 @@ main { padding-right: var(--rail); }
 .apply-en { font-family: 'Cormorant Garamond', serif; font-weight: 700; letter-spacing: .4em; font-size: 13px; color: var(--gold2); }
 .apply-main h3 { margin: 8px 0 16px; font-family: 'Shippori Mincho B1', serif; font-size: 26px; line-height: 1.6; letter-spacing: .08em; }
 .apply-main p { margin: 0 0 30px; color: #dfe5f6; font-size: 14.5px; }
+.oc-name { display: flex; align-items: center; gap: 14px; margin: -8px 0 28px; padding: 14px 18px; border-radius: 12px; background: rgba(255,255,255,.1); box-shadow: inset 0 0 0 1px rgba(255,255,255,.18); }
+.oc-name .mi { font-size: 28px; color: var(--gold2); }
+.oc-name small { display: block; font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 11px; letter-spacing: .3em; color: var(--gold2); line-height: 1.4; }
+.oc-name b { display: block; font-size: 15px; letter-spacing: .04em; line-height: 1.5; }
 .apply-btn { padding: 16px 30px; }
 .apply-check { padding: 44px 38px; background: var(--paper); }
 .apply-check b { display: flex; align-items: center; gap: 8px; font-family: 'Shippori Mincho B1', serif; color: var(--ink); font-size: 18px; margin-bottom: 16px; }

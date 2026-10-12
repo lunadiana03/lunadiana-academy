@@ -7,7 +7,7 @@
 const LINKS = {
   request: '',  // 資料請求（リットリンク）
   contact: 'https://marshmallow-qa.com/4xbheq5peha9k4g?t=NCLk2k',  // お問い合わせ（マシュマロ）
-  openchat: '', // 出願（公式オープンチャット）
+  openchat: 'https://line.me/ti/g2/cnZceug6TZ-n78DY8U47b14t6uE8z3MzBaP1aw', // 出願（公式オープンチャット）
   notebook: 'https://lunadiana03.github.io/LunaDianaSchool/' // レッスン手帳
 };
 
@@ -134,6 +134,7 @@ const C = {
       { title: '組の決定', text: '希望をもとに\n所属する組が決まります。' },
       { title: '入学', text: 'レッスン手帳で\n毎日のレッスンがはじまります。' }
     ],
+    ocName: 'アイドルになりたい！♡半表禁制全緩ハント',
     applyTitle: '出願は、公式オープンチャットから。',
     applyText: 'ルナディアーナ学園の出願は、LINEの公式オープンチャットで受け付けています。\n下のボタンから参加して、申請してください。',
     checklist: [
@@ -375,6 +376,7 @@ const RENDER = {
             <span class="apply-en">WEB ENTRY</span>
             <h3>${esc(a.applyTitle)}</h3>
             <p class="prose">${esc(a.applyText)}</p>
+            ${a.ocName ? `<div class="oc-name"><span class="mi">forum</span><div><small>OPEN CHAT</small><b>${esc(a.ocName)}</b></div></div>` : ''}
             <a class="btn gold apply-btn" href="${esc(oc || '#')}"${oc ? ' target="_blank" rel="noopener"' : ` onclick="openLink('openchat', event)"`}>${mi('forum')}オープンチャットで出願する${mi('open_in_new')}</a>
           </div>
           <div class="apply-check">
