@@ -230,7 +230,7 @@ const RENDER = {
     ];
     return `
       <section class="hero"><img class="pic" src="img/hero.jpg" alt="${esc(s.name)}"><div class="sparkles">${spark}</div>
-        <div class="big"><b>LUNADIANA</b><span>${esc(s.heroSub)}</span></div></section>
+        <div class="big"><b>LUNADIANA</b><span>${esc(s.heroSub)}</span></div><i class="scroll"></i></section>
       <section class="section"><div class="wrap">
         ${secHead('ABOUT US', s.name + 'とは')}
         <p class="lead reveal" style="font-size:22px;font-weight:700;margin-bottom:24px">${esc(h.introTitle)}</p>

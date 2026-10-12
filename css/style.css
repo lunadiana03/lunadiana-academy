@@ -87,17 +87,20 @@ main { padding-right: var(--rail); }
 .center { text-align: center; }
 
 /* ---------- トップのヒーロー ---------- */
-.hero { position: relative; overflow: hidden; background: #dfe8fa; }
-.hero .pic { width: 100%; aspect-ratio: 1563 / 816; max-height: calc(100vh - 84px); object-fit: cover; object-position: center 40%; animation: heroIn 2.4s var(--ease) both; }
+.hero { position: relative; overflow: hidden; background: #dfe8fa; height: calc(100vh - 84px); height: calc(100svh - 84px); min-height: 480px; }
+.hero .pic { width: 100%; height: 100%; object-fit: cover; object-position: 58% 22%; animation: heroIn 2.4s var(--ease) both; }
 @keyframes heroIn { from { transform: scale(1.06); opacity: 0; } to { transform: none; opacity: 1; } }
-.hero::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 34%; background: linear-gradient(180deg, transparent, rgba(246,248,253,.92) 78%, var(--bg)); pointer-events: none; }
-.hero .big { position: absolute; left: 0; right: 0; bottom: 34px; z-index: 2; text-align: center; pointer-events: none; }
-.hero .big b { display: block; font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: clamp(56px, 12.5vw, 190px); line-height: .82; letter-spacing: .02em; color: #fff;
-  -webkit-text-stroke: 1px rgba(200,161,74,.35); text-shadow: 0 6px 30px rgba(31,52,120,.25); animation: bigIn 1.6s var(--ease) both .5s; }
+.hero::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 30%; background: linear-gradient(180deg, transparent, rgba(246,248,253,.55) 55%, rgba(246,248,253,.9)); pointer-events: none; }
+.hero .big { position: absolute; left: 0; right: 0; bottom: calc(18px + 4vh); z-index: 2; text-align: center; pointer-events: none; }
+.hero .big b { display: block; font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: clamp(52px, 8.6vw, 150px); line-height: .82; letter-spacing: .04em; color: #fff;
+  -webkit-text-stroke: 1px rgba(200,161,74,.45); text-shadow: 0 4px 24px rgba(31,52,120,.3); animation: bigIn 1.6s var(--ease) both .5s; }
 @keyframes bigIn { from { opacity: 0; transform: translateY(30px); letter-spacing: .1em; } to { opacity: 1; transform: none; } }
-.hero .big span { display: flex; align-items: center; justify-content: center; gap: 22px; margin-top: 14px; font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: clamp(11px, 1.5vw, 16px); letter-spacing: .5em; color: var(--navy2); animation: bigIn 1.6s var(--ease) both .9s; }
-.hero .big span::before, .hero .big span::after { content: ''; width: 18vw; max-width: 260px; height: 1px; background: linear-gradient(90deg, transparent, var(--navy3)); }
+.hero .big span { display: flex; align-items: center; justify-content: center; gap: 22px; margin-top: 14px; font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: clamp(11px, 1.3vw, 16px); letter-spacing: .5em; color: var(--navy2); animation: bigIn 1.6s var(--ease) both .9s; }
+.hero .big span::before, .hero .big span::after { content: ''; width: 14vw; max-width: 220px; height: 1px; background: linear-gradient(90deg, transparent, var(--navy3)); }
 .hero .big span::after { transform: scaleX(-1); }
+.hero .scroll { position: absolute; left: 50%; bottom: 0; z-index: 2; transform: translateX(-50%); width: 1px; height: calc(4vh + 4px); overflow: hidden; }
+.hero .scroll::before { content: ''; position: absolute; left: 0; top: 0; width: 1px; height: 100%; background: var(--navy3); animation: scrollLine 2.4s var(--ease) infinite; }
+@keyframes scrollLine { 0% { transform: translateY(-100%); } 60%, 100% { transform: translateY(100%); } }
 .sparkles { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
 .sparkles i { position: absolute; color: #fff; filter: drop-shadow(0 0 6px rgba(255,236,190,.9)); animation: twinkle 3s ease-in-out infinite; }
 
@@ -220,6 +223,8 @@ main { padding-right: var(--rail); }
 @keyframes toastIn { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
 
 /* ---------- スマホ ---------- */
+.brand, .gnav a { white-space: nowrap; }
+@media (max-width: 1320px) { .gnav a { padding: 6px 16px; font-size: 14.5px; } .gnav a::after { left: 16px; right: 16px; } .site-header { padding-left: 20px; padding-right: calc(var(--rail) + 16px); } .brand b { font-size: 22px; } }
 @media (max-width: 1020px) { .gnav { display: none; } }
 @media (max-width: 760px) {
   :root { --rail: 0px; }
@@ -242,9 +247,6 @@ main { padding-right: var(--rail); }
   .section { padding: 64px 0; }
   .sec-head h2 { font-size: 24px; }
   .lead { font-size: 15px; text-align: left; }
-  .hero .big { bottom: 14px; }
-  .hero .big span { gap: 10px; letter-spacing: .3em; }
-  .hero .big span::before, .hero .big span::after { display: none; }
   .cards.c2, .cards.c3, .cards.c4 { grid-template-columns: 1fr; }
   .cards.links { grid-template-columns: 1fr 1fr; gap: 12px; }
   .link-card { padding: 26px 10px 22px; }
@@ -262,5 +264,15 @@ main { padding-right: var(--rail); }
   .stats-band { grid-template-columns: 1fr; }
   .site-footer { padding: 50px 16px 30px; }
   .page-hero { padding: 64px 0 52px; }
+}
+/* 縦長の画面では画像を切らずに全部見せ、大きな文字はその下に */
+@media (max-width: 760px), (max-aspect-ratio: 5/4) {
+  .hero { height: auto; min-height: 0; background: var(--bg); }
+  .hero .pic { height: auto; aspect-ratio: 1563 / 816; -webkit-mask-image: linear-gradient(180deg, #000 78%, transparent); mask-image: linear-gradient(180deg, #000 78%, transparent); }
+  .hero::after, .hero .scroll { display: none; }
+  .hero .big { position: relative; bottom: auto; margin-top: -6px; padding: 0 0 10px; }
+  .hero .big b { font-size: calc((100vw - var(--rail)) * .145); color: var(--navy2); -webkit-text-stroke: 0; text-shadow: none; }
+  .hero .big span { gap: 10px; letter-spacing: .3em; margin-top: 10px; }
+  .hero .big span::before, .hero .big span::after { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } .reveal { opacity: 1; transform: none; } }
