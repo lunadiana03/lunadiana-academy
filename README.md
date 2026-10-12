@@ -12,7 +12,7 @@ GitHub の Settings → Pages → Branch を `main` / `/ (root)` にして保存
 const LINKS = {
   request: '',  // 資料請求（リットリンク）
   contact: '...',  // お問い合わせ（マシュマロ）
-  openchat: '', // 出願（公式オープンチャット）
+  openchat: '', // 出願（LINEの学園ルーム）
   notebook: 'https://lunadiana03.github.io/LunaDianaSchool/' // レッスン手帳
 };
 ```

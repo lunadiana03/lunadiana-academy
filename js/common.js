@@ -7,7 +7,7 @@
 const LINKS = {
   request: '',  // 資料請求（リットリンク）
   contact: 'https://marshmallow-qa.com/4xbheq5peha9k4g?t=NCLk2k',  // お問い合わせ（マシュマロ）
-  openchat: 'https://line.me/ti/g2/cnZceug6TZ-n78DY8U47b14t6uE8z3MzBaP1aw', // 出願（公式オープンチャット）
+  openchat: 'https://line.me/ti/g2/cnZceug6TZ-n78DY8U47b14t6uE8z3MzBaP1aw', // 出願（LINEの学園ルーム）
   notebook: 'https://lunadiana03.github.io/LunaDianaSchool/' // レッスン手帳
 };
 
@@ -45,7 +45,7 @@ const C = {
   },
   news: [
     { id: 'n3', date: '2026-10-12', cat: 'お知らせ', title: '公式サイトを公開しました', body: 'ルナディアーナ学園の公式サイトを公開しました。\n学園のこと、4つの組のこと、毎日の学園生活などをご紹介していきます。どうぞよろしくお願いいたします。' },
-    { id: 'n2', date: '2026-10-01', cat: '入学', title: '新入生の募集を受け付けています', body: '現在、新入生を随時募集しています。\n募集要項は「入学案内」ページをご覧ください。出願は公式オープンチャットから受け付けています。' },
+    { id: 'n2', date: '2026-10-01', cat: '入学', title: '新入生の募集を受け付けています', body: '現在、新入生を随時募集しています。\n募集要項は「入学案内」ページをご覧ください。出願はLINEの学園ルームから受け付けています。' },
     { id: 'n1', date: '2026-09-20', cat: '学園生活', title: 'レッスン手帳がリニューアルしました', body: '毎日のレッスン記録をつける「レッスン手帳」がリニューアルしました。\n組ごとのランキングやカレンダーも使えます。' }
   ],
   about: {
@@ -125,22 +125,22 @@ const C = {
       { k: '募集する人', v: 'アイドル・俳優・ダンサー・モデルなど、芸能の道を目指す人' },
       { k: '所属', v: '花の歌組 / 鳥の劇組 / 風の舞組 / 月の美組\n（出願のときに希望の組をお伝えください）' },
       { k: '募集期間', v: '随時' },
-      { k: '出願方法', v: '公式オープンチャットに参加し、申請してください\n（このページの「出願はこちら」から参加できます）' },
+      { k: '出願方法', v: 'LINEの学園ルームに参加し、申請してください\n（このページの「出願はこちら」から参加できます）' },
       { k: '選考', v: '申請の内容をもとに、学園で確認します' }
     ],
     steps: [
       { title: '資料請求', text: 'まずは学園のことを\n知ってください。' },
-      { title: 'オープンチャットで出願', text: '公式オープンチャットに参加して\n申請します。' },
+      { title: 'LINEで出願', text: '学園ルームに参加して\n申請します。' },
       { title: '組の決定', text: '希望をもとに\n所属する組が決まります。' },
       { title: '入学', text: 'レッスン手帳で\n毎日のレッスンがはじまります。' }
     ],
     ocName: 'アイドルになりたい！♡半表禁制全緩ハント',
-    applyTitle: '出願は、公式オープンチャットから。',
-    applyText: 'ルナディアーナ学園の出願は、LINEの公式オープンチャットで受け付けています。\n下のボタンから参加して、申請してください。',
+    applyTitle: '出願は、LINEの学園ルームから。',
+    applyText: 'ルナディアーナ学園の出願は、LINEの学園ルームで受け付けています。\n下のボタンから参加して、申請してください。',
     checklist: [
       '募集要項と入学までの流れを確認する',
       '気になる組を決めておく（迷っていても大丈夫です）',
-      'オープンチャットに参加して、案内にそって申請する'
+      '学園ルームに参加して、案内にそって申請する'
     ],
     note: 'わからないことがあれば、お問い合わせ（マシュマロ）からお気軽にどうぞ。'
   },
@@ -376,8 +376,8 @@ const RENDER = {
             <span class="apply-en">WEB ENTRY</span>
             <h3>${esc(a.applyTitle)}</h3>
             <p class="prose">${esc(a.applyText)}</p>
-            ${a.ocName ? `<div class="oc-name"><span class="mi">forum</span><div><small>OPEN CHAT</small><b>${esc(a.ocName)}</b></div></div>` : ''}
-            <a class="btn gold apply-btn" href="${esc(oc || '#')}"${oc ? ' target="_blank" rel="noopener"' : ` onclick="openLink('openchat', event)"`}>${mi('forum')}オープンチャットで出願する${mi('open_in_new')}</a>
+            ${a.ocName ? `<div class="oc-name"><span class="mi">forum</span><div><small>LINE ROOM</small><b>${esc(a.ocName)}</b></div></div>` : ''}
+            <a class="btn gold apply-btn" href="${esc(oc || '#')}"${oc ? ' target="_blank" rel="noopener"' : ` onclick="openLink('openchat', event)"`}>${mi('forum')}LINEで出願する${mi('open_in_new')}</a>
           </div>
           <div class="apply-check">
             <b>${mi('checklist')}出願前の確認</b>
