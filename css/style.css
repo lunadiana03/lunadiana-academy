@@ -186,6 +186,28 @@ main { padding-right: var(--rail); }
 .stats-band b { display: block; font-family: 'Cormorant Garamond', serif; font-size: 52px; line-height: 1; color: var(--gold2); }
 .stats-band span { font-family: 'Shippori Mincho B1', serif; letter-spacing: .12em; font-size: 14px; }
 
+/* 質疑応答 */
+.qa-filter { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: -12px 0 36px; }
+.qa-filter button { padding: 6px 18px; border-radius: 999px; font-size: 13.5px; color: var(--navy); background: #fff; box-shadow: inset 0 0 0 1px #cfd6ea; transition: background .3s, color .3s; }
+.qa-filter button.on { color: #fff; background: var(--navy2); box-shadow: none; }
+.qa-list { max-width: 820px; margin: 0 auto; display: grid; gap: 30px; }
+.qa-item { position: relative; background: var(--paper); border-radius: 8px; padding: 30px 34px 32px; box-shadow: 0 10px 30px rgba(31,52,120,.07); }
+.qa-item::before { content: ''; position: absolute; left: 0; top: 0; right: 0; height: 3px; border-radius: 8px 8px 0 0; background: linear-gradient(90deg, var(--gold2), var(--navy3)); }
+.qa-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; font-size: 12.5px; color: var(--sub); }
+.qa-meta .no { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 15px; letter-spacing: .2em; color: var(--gold); }
+.qa-meta .cat { padding: 1px 12px; border-radius: 999px; color: var(--navy); background: var(--sky); letter-spacing: .1em; }
+.qa-meta time { margin-left: auto; font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 14px; letter-spacing: .08em; }
+.qa-q, .qa-a { display: grid; grid-template-columns: 46px 1fr; gap: 16px; align-items: start; }
+.qa-item .mark { width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 26px; line-height: 1; }
+.qa-q .mark { color: var(--gold); box-shadow: inset 0 0 0 1.5px var(--gold2); background: #fffaf0; }
+.qa-a .mark { color: #fff; background: linear-gradient(140deg, var(--navy3), var(--navy)); box-shadow: 0 6px 14px rgba(31,52,120,.25); }
+.qa-q p { position: relative; margin: 0; padding: 14px 20px; border-radius: 4px 18px 18px 18px; background: #f3f5fb; color: var(--ink); white-space: pre-line; font-weight: 500; }
+.qa-a { margin-top: 20px; }
+.qa-a > div { padding: 4px 0 0 20px; border-left: 1px solid var(--gold2); }
+.qa-a p { margin: 0; white-space: pre-line; font-family: 'Shippori Mincho B1', serif; font-size: 15.5px; line-height: 2.1; color: var(--ink); }
+.qa-a .from { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-top: 14px; font-family: 'Shippori Mincho B1', serif; font-size: 13px; color: var(--navy2); letter-spacing: .12em; }
+.qa-a .from img { width: 26px; height: 26px; object-fit: contain; }
+
 /* ---------- 下層ページの見出し ---------- */
 .page-hero { position: relative; overflow: hidden; padding: 90px 0 76px; text-align: center; color: #fff;
   background: linear-gradient(120deg, rgba(31,52,120,.88), rgba(45,69,151,.72)), url(../img/hero.jpg) center 78% / cover no-repeat; }
@@ -262,6 +284,10 @@ main { padding-right: var(--rail); }
   .table th, .table td { display: block; width: 100%; padding: 12px 16px; }
   .table th { border-bottom: 0; }
   .stats-band { grid-template-columns: 1fr; }
+  .qa-item { padding: 24px 18px 24px; }
+  .qa-q, .qa-a { grid-template-columns: 36px 1fr; gap: 12px; }
+  .qa-item .mark { width: 36px; height: 36px; font-size: 21px; }
+  .qa-a > div { padding-left: 14px; }
   .site-footer { padding: 50px 16px 30px; }
   .page-hero { padding: 64px 0 52px; }
 }

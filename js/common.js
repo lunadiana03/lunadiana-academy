@@ -6,7 +6,7 @@
 // ボタンの行き先。URLを貼るだけでつながります（空のあいだは押すと「準備中です」と出ます）
 const LINKS = {
   request: '',  // 資料請求（リットリンク）
-  contact: '',  // お問い合わせ（マシュマロ）
+  contact: 'https://marshmallow-qa.com/4xbheq5peha9k4g?t=NCLk2k',  // お問い合わせ（マシュマロ）
   notebook: 'https://lunadiana03.github.io/LunaDianaSchool/' // レッスン手帳
 };
 
@@ -23,7 +23,8 @@ const PAGES = [
   { id: 'life', file: 'life.html', ja: '学園生活', en: 'CAMPUS LIFE', nav: true },
   { id: 'career', file: 'career.html', ja: '進路実績', en: 'CAREER', nav: true },
   { id: 'admission', file: 'admission.html', ja: '入学案内', en: 'ADMISSION', nav: true },
-  { id: 'news', file: 'news.html', ja: 'お知らせ', en: 'NEWS' }
+  { id: 'news', file: 'news.html', ja: 'お知らせ', en: 'NEWS' },
+  { id: 'contact', file: 'contact.html', ja: 'お問い合わせ', en: 'CONTACT' }
 ];
 
 // ---------- サイトの文章（ここを書き換えると反映されます。\n は改行） ----------
@@ -133,7 +134,15 @@ const C = {
       { title: '入学', text: 'レッスン手帳で\n毎日のレッスンがはじまります。' }
     ],
     note: 'わからないことがあれば、お問い合わせ（マシュマロ）からお気軽にどうぞ。'
-  }
+  },
+  contact: {
+    lead: '学園へのご質問は、マシュマロから匿名で送ることができます。\nいただいたご質問への回答は、このページの「質疑応答」に掲載します。',
+    answerer: 'ルナディアーナ学園'
+  },
+  // 質疑応答（新しいものを上に足していく）
+  // { date: '2026-10-12', cat: '入学', q: '質問の文面', a: '回答の文面' },
+  qa: [
+  ]
 };
 
 // ---------- 小さな道具 ----------
@@ -175,7 +184,7 @@ function renderShell(page) {
     <button class="menu-btn" type="button" aria-expanded="false" aria-label="メニュー" onclick="toggleMenu()"><span class="bars"><i></i><i></i><i></i></span><span class="l">MENU</span></button>
     <hr>
     <a href="#" onclick="openLink('request', event)">${mi('description')}資料請求</a>
-    <a href="#" onclick="openLink('contact', event)">${mi('mail')}お問い合わせ</a>
+    <a href="contact.html">${mi('mail')}お問い合わせ</a>
     <div class="tail">${star()}</div>`;
 
   let menu = document.querySelector('.menu');
@@ -184,8 +193,7 @@ function renderShell(page) {
   menu.innerHTML = `<nav class="menu-list">
     ${items.map((p, i) => `<a href="${p.file}" style="transition-delay:${.05 + i * .04}s"><b>${esc(p.ja)}</b><span>${esc(p.en)}</span></a>`).join('')}
     <a href="#" onclick="openLink('request', event)" style="transition-delay:${.05 + items.length * .04}s"><b>資料請求</b><span>REQUEST</span></a>
-    <a href="#" onclick="openLink('contact', event)" style="transition-delay:${.09 + items.length * .04}s"><b>お問い合わせ</b><span>CONTACT</span></a>
-    ${safeUrl(LINKS.notebook) ? `<a href="${esc(safeUrl(LINKS.notebook))}" target="_blank" rel="noopener" style="transition-delay:${.13 + items.length * .04}s"><b>レッスン手帳</b><span>LESSON NOTE</span></a>` : ''}
+    ${safeUrl(LINKS.notebook) ? `<a href="${esc(safeUrl(LINKS.notebook))}" target="_blank" rel="noopener" style="transition-delay:${.09 + items.length * .04}s"><b>レッスン手帳</b><span>LESSON NOTE</span></a>` : ''}
   </nav>`;
 
   let footer = document.querySelector('.site-footer');
@@ -193,7 +201,7 @@ function renderShell(page) {
   footer.innerHTML = `
     <img src="img/emblem.png" alt="">
     <div class="nm">${esc(s.name)}</div><div class="en">${esc(s.en)}</div>
-    <nav>${items.map(p => `<a href="${p.file}">${esc(p.ja)}</a>`).join('')}<a href="#" onclick="openLink('request', event)">資料請求</a><a href="#" onclick="openLink('contact', event)">お問い合わせ</a></nav>
+    <nav>${items.map(p => `<a href="${p.file}">${esc(p.ja)}</a>`).join('')}<a href="#" onclick="openLink('request', event)">資料請求</a></nav>
     <small>${esc(s.copyright)}</small>`;
 }
 function pageHero(page) {
@@ -252,7 +260,7 @@ const RENDER = {
         <div class="cards c4 links">${links.map(l => `<a class="card link-card reveal" href="${l[0]}">${mi(l[1])}<b>${esc(l[2])}</b><span>${l[3]}</span></a>`).join('')}</div>
         <div class="cards c2" style="margin-top:28px">
           <a class="card link-card reveal" href="#" onclick="openLink('request', event)">${mi('description')}<b>資料請求</b><span>REQUEST</span></a>
-          <a class="card link-card reveal" href="#" onclick="openLink('contact', event)">${mi('mail')}<b>お問い合わせ</b><span>CONTACT</span></a>
+          <a class="card link-card reveal" href="contact.html">${mi('mail')}<b>お問い合わせ</b><span>CONTACT</span></a>
         </div>
       </div></section>`;
   },
@@ -349,8 +357,30 @@ const RENDER = {
         <p class="center reveal" style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center">
           ${url ? `<a class="btn gold" href="${esc(url)}" target="_blank" rel="noopener">入学願書（レッスン手帳）${mi('open_in_new')}</a>` : ''}
           <a class="btn" href="#" onclick="openLink('request', event)">資料請求${mi('arrow_forward')}</a>
-          <a class="btn line" href="#" onclick="openLink('contact', event)">お問い合わせ${mi('mail')}</a>
+          <a class="btn line" href="contact.html">お問い合わせ${mi('mail')}</a>
         </p>
+      </div></section>`;
+  },
+
+  contact() {
+    const c = C.contact, url = safeUrl(LINKS.contact), list = C.qa || [];
+    const cats = [...new Set(list.map(x => x.cat).filter(Boolean))];
+    return pageHero('contact') + `
+      <section class="section"><div class="wrap">
+        ${secHead('CONTACT', 'お問い合わせ')}
+        <p class="lead reveal" style="margin-bottom:34px">${esc(c.lead)}</p>
+        <p class="center reveal"><a class="btn gold" href="${esc(url || '#')}"${url ? ' target="_blank" rel="noopener"' : ` onclick="openLink('contact', event)"`}>${mi('mail')}マシュマロで質問する${mi('open_in_new')}</a></p>
+      </div></section>
+      <section class="section alt" id="qa"><div class="wrap">
+        ${secHead('Q & A', '質疑応答')}
+        ${cats.length > 1 ? `<div class="qa-filter reveal"><button class="on" data-cat="">すべて</button>${cats.map(k => `<button data-cat="${esc(k)}">${esc(k)}</button>`).join('')}</div>` : ''}
+        ${list.length ? `<div class="qa-list">${list.map((x, i) => `
+          <article class="qa-item reveal" data-cat="${esc(x.cat || '')}">
+            <div class="qa-meta"><span class="no">No.${String(list.length - i).padStart(2, '0')}</span>${x.cat ? `<span class="cat">${esc(x.cat)}</span>` : ''}${x.date ? `<time>${fmtDate(x.date)}</time>` : ''}</div>
+            <div class="qa-q"><span class="mark">Q</span><p>${esc(x.q)}</p></div>
+            <div class="qa-a"><span class="mark">A</span><div><p>${esc(x.a)}</p><div class="from"><img src="img/emblem.png" alt="">${esc(c.answerer)}</div></div></div>
+          </article>`).join('')}</div>`
+          : '<p class="center reveal" style="color:var(--sub)">回答はまだありません。届いたご質問から、順次掲載していきます。</p>'}
       </div></section>`;
   },
 
@@ -394,6 +424,11 @@ function renderPage() {
   }
   requestAnimationFrame(setupReveal);
 }
+document.addEventListener('click', e => {
+  const b = e.target.closest('.qa-filter button'); if (!b) return;
+  document.querySelectorAll('.qa-filter button').forEach(x => x.classList.toggle('on', x === b));
+  document.querySelectorAll('.qa-item').forEach(it => { it.style.display = !b.dataset.cat || it.dataset.cat === b.dataset.cat ? '' : 'none'; });
+});
 document.addEventListener('keydown', e => { if (e.key === 'Escape') toggleMenu(false); });
 document.addEventListener('click', e => { if (document.body.classList.contains('menu-open') && e.target.closest('.menu-list a')) toggleMenu(false); });
 if (document.getElementById('app')) {
