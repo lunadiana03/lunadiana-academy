@@ -1,10 +1,14 @@
 /* ルナディアーナ学園 公式サイト 共通スクリプト
  * ・ヘッダー / 右の縦レール / メニュー / フッターを各ページに描く
- * ・文章は DEFAULTS を初期値に、スプレッドシート（GAS）に保存された内容で上書きして表示する
+ * ・文章はこのファイルの CONTENT に書いてある。書き換えるとサイトに反映される
  */
 
-// GASのウェブアプリURL（空のあいだは「お試しモード」：このブラウザの中だけに保存されます）
-const API_URL = '';
+// ボタンの行き先。URLを貼るだけでつながります（空のあいだは押すと「準備中です」と出ます）
+const LINKS = {
+  request: '',  // 資料請求（リットリンク）
+  contact: '',  // お問い合わせ（マシュマロ）
+  notebook: 'https://lunadiana03.github.io/LunaDianaSchool/' // レッスン手帳
+};
 
 const KUMI = [
   { name: '花の歌組🌸', emo: '🌸', en: 'VOCAL', stat: 'Vo', color: '#e8618c' },
@@ -19,20 +23,17 @@ const PAGES = [
   { id: 'life', file: 'life.html', ja: '学園生活', en: 'CAMPUS LIFE', nav: true },
   { id: 'career', file: 'career.html', ja: '進路実績', en: 'CAREER', nav: true },
   { id: 'admission', file: 'admission.html', ja: '入学案内', en: 'ADMISSION', nav: true },
-  { id: 'news', file: 'news.html', ja: 'お知らせ', en: 'NEWS' },
-  { id: 'request', file: 'request.html', ja: '資料請求', en: 'REQUEST' }
+  { id: 'news', file: 'news.html', ja: 'お知らせ', en: 'NEWS' }
 ];
 
-// ---------- 初期の文章（管理画面で書き換えると、こちらは使われなくなります） ----------
-const DEFAULTS = {
+// ---------- サイトの文章（ここを書き換えると反映されます。\n は改行） ----------
+const C = {
   site: {
     name: 'ルナディアーナ学園',
     kicker: '芸能育成学校',
     en: 'LUNADIANA ACADEMY',
     heroSub: 'ENTERTAINMENT TRAINING SCHOOL',
     motto: '星々よ、大志を抱け',
-    marshmallowUrl: '',
-    notebookUrl: 'https://lunadiana03.github.io/LunaDianaSchool/',
     copyright: '© LUNADIANA ACADEMY'
   },
   home: {
@@ -132,62 +133,7 @@ const DEFAULTS = {
       { title: '入学', text: 'レッスン手帳で\n毎日のレッスンがはじまります。' }
     ],
     note: 'わからないことがあれば、お問い合わせ（マシュマロ）からお気軽にどうぞ。'
-  },
-  request: {
-    lead: '学園案内の資料をご希望の方は、こちらからお申し込みください。',
-    done: 'お申し込みありがとうございました。\n学園からのご連絡をお待ちください。'
   }
-};
-
-// 管理画面で使う「編集できる項目」の一覧
-const SCHEMA = {
-  site: { label: 'サイト全体', fields: [
-    { k: 'name', label: '学園名' }, { k: 'kicker', label: '学園名の上の小さい文字' }, { k: 'en', label: '英語の学園名' },
-    { k: 'heroSub', label: 'トップの大きな文字の下の英語' }, { k: 'motto', label: '校訓' },
-    { k: 'marshmallowUrl', label: 'お問い合わせ（マシュマロ）のURL', type: 'url' },
-    { k: 'notebookUrl', label: 'レッスン手帳のURL', type: 'url' }, { k: 'copyright', label: 'フッターの著作権表示' }
-  ] },
-  news: { label: 'お知らせ', list: true, itemLabel: 'お知らせ', fields: [
-    { k: 'date', label: '日付', type: 'date' }, { k: 'cat', label: 'カテゴリ' }, { k: 'title', label: 'タイトル' }, { k: 'body', label: '本文', type: 'textarea' }
-  ] },
-  home: { label: 'トップ', fields: [
-    { k: 'introTitle', label: '紹介の見出し', type: 'textarea' }, { k: 'introText', label: '紹介の文章', type: 'textarea' }, { k: 'linksTitle', label: 'リンク欄の見出し' }
-  ] },
-  about: { label: '学園紹介', fields: [
-    { k: 'philosophyLead', label: '教育理念（ひとこと）', type: 'textarea' },
-    { k: 'principles', label: '教育理念の3つの柱', type: 'list', itemLabel: '柱', fields: [{ k: 'title', label: '見出し' }, { k: 'text', label: '説明', type: 'textarea' }] },
-    { k: 'principalTitle', label: '肩書き' }, { k: 'principalName', label: '学園長の名前' },
-    { k: 'message', label: '学園長メッセージ', type: 'textarea' },
-    { k: 'emblemText', label: '校章の説明', type: 'textarea' },
-    { k: 'flowers', label: '四つの花', type: 'list', itemLabel: '花', fields: [{ k: 'title', label: '見出し' }, { k: 'text', label: '説明', type: 'textarea' }] },
-    { k: 'history', label: '沿革', type: 'list', itemLabel: '出来事', fields: [{ k: 't', label: '時期' }, { k: 'title', label: '見出し' }, { k: 'text', label: '説明', type: 'textarea' }] }
-  ] },
-  courses: { label: 'コース紹介', fields: [
-    { k: 'lead', label: 'はじめの文章', type: 'textarea' },
-    { k: 'kumi', label: '4つの組（順番：花の歌組・鳥の劇組・風の舞組・月の美組）', type: 'list', fixed: 4, itemLabel: '組', fields: [{ k: 'catch', label: 'キャッチコピー' }, { k: 'text', label: '説明', type: 'textarea' }, { k: 'points', label: '特徴（1行に1つ）', type: 'textarea' }] },
-    { k: 'lessonsLead', label: 'レッスン紹介の文章', type: 'textarea' },
-    { k: 'lessons', label: 'レッスン', type: 'list', itemLabel: 'レッスン', fields: [{ k: 'icon', label: 'アイコン名（Material Symbols）' }, { k: 'title', label: '名前' }, { k: 'text', label: '説明', type: 'textarea' }] }
-  ] },
-  life: { label: '学園生活', fields: [
-    { k: 'lead', label: 'はじめの文章', type: 'textarea' },
-    { k: 'day', label: '1日の流れ', type: 'list', itemLabel: '時間', fields: [{ k: 't', label: '時刻' }, { k: 'title', label: '見出し' }, { k: 'text', label: '説明', type: 'textarea' }] },
-    { k: 'events', label: '年間行事', type: 'list', itemLabel: '行事', fields: [{ k: 't', label: '月' }, { k: 'title', label: '行事名' }, { k: 'text', label: '説明', type: 'textarea' }] },
-    { k: 'notebookTitle', label: 'レッスン手帳の見出し' }, { k: 'notebookText', label: 'レッスン手帳の説明', type: 'textarea' }
-  ] },
-  career: { label: '進路実績', fields: [
-    { k: 'lead', label: 'はじめの文章', type: 'textarea' },
-    { k: 'stats', label: '数字の帯（3つ）', type: 'list', fixed: 3, itemLabel: '数字', fields: [{ k: 'num', label: '数字' }, { k: 'label', label: 'ラベル' }] },
-    { k: 'items', label: '実績', type: 'list', itemLabel: '実績', fields: [{ k: 'year', label: '年・時期' }, { k: 'title', label: '内容（例：○○でデビュー）' }, { k: 'who', label: '名前・組' }, { k: 'text', label: 'ひとこと', type: 'textarea' }] }
-  ] },
-  admission: { label: '入学案内', fields: [
-    { k: 'lead', label: 'はじめの文章', type: 'textarea' },
-    { k: 'table', label: '募集要項', type: 'list', itemLabel: '項目', fields: [{ k: 'k', label: '項目名' }, { k: 'v', label: '内容', type: 'textarea' }] },
-    { k: 'steps', label: '入学までの流れ', type: 'list', itemLabel: 'ステップ', fields: [{ k: 'title', label: '見出し' }, { k: 'text', label: '説明', type: 'textarea' }] },
-    { k: 'note', label: 'さいごのひとこと', type: 'textarea' }
-  ] },
-  request: { label: '資料請求', fields: [
-    { k: 'lead', label: 'フォームの上の文章', type: 'textarea' }, { k: 'done', label: '送信後のメッセージ', type: 'textarea' }
-  ] }
 };
 
 // ---------- 小さな道具 ----------
@@ -203,61 +149,12 @@ function toast(msg) {
 }
 function secHead(en, ja) { return `<div class="sec-head reveal"><span class="en">${esc(en)}</span><h2>${esc(ja)}</h2><div class="orn">${star()}</div></div>`; }
 
-// ---------- 通信（API_URLが空ならブラウザ内のお試し保存） ----------
-const DEMO_KEY = 'lda_demo_db';
-function demoDb() { try { return JSON.parse(localStorage.getItem(DEMO_KEY)) || { content: {}, requests: [] }; } catch (e) { return { content: {}, requests: [] }; } }
-function demoSave(db) { try { localStorage.setItem(DEMO_KEY, JSON.stringify(db)); } catch (e) {} }
-function demoApi(body) {
-  const db = demoDb();
-  const authed = body.password === 'admin';
-  switch (body.action) {
-    case 'get': return { ok: true, content: db.content };
-    case 'addRequest': db.requests.unshift({ id: 'r' + Date.now(), at: new Date().toISOString(), name: body.name, kumi: body.kumi, contact: body.contact, message: body.message }); demoSave(db); return { ok: true };
-    case 'checkKey': return authed ? { ok: true } : { error: 'パスワードが違います' };
-    case 'save': if (!authed) return { error: 'パスワードが違います' }; db.content[body.key] = body.value; demoSave(db); return { ok: true };
-    case 'listRequests': return authed ? { ok: true, requests: db.requests } : { error: 'パスワードが違います' };
-    case 'deleteRequest': if (!authed) return { error: 'パスワードが違います' }; db.requests = db.requests.filter(r => r.id !== body.id); demoSave(db); return { ok: true };
-  }
-  return { error: '不明な操作です' };
-}
-function api(action, payload) {
-  const body = Object.assign({ action }, payload || {});
-  if (!API_URL) return new Promise(res => setTimeout(() => res(demoApi(JSON.parse(JSON.stringify(body)))), 250));
-  return fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) })
-    .then(r => r.json())
-    .catch(() => ({ error: '通信できませんでした。時間をおいてもう一度お試しください' }));
-}
-
-// ---------- 文章の読み込み ----------
-const CACHE_KEY = 'lda_content_cache';
-let C = mergeContent({});
-function mergeContent(remote) {
-  const out = {};
-  Object.keys(DEFAULTS).forEach(k => {
-    const d = DEFAULTS[k], r = remote ? remote[k] : undefined;
-    if (Array.isArray(d)) out[k] = Array.isArray(r) ? r : d;
-    else out[k] = Object.assign({}, d, (r && typeof r === 'object' && !Array.isArray(r)) ? r : {});
-  });
-  return out;
-}
-function loadContent(onUpdate) {
-  let cached = null;
-  try { cached = JSON.parse(localStorage.getItem(CACHE_KEY)); } catch (e) {}
-  if (cached) C = mergeContent(cached);
-  api('get').then(res => {
-    if (!res || !res.ok) return;
-    const s = JSON.stringify(res.content || {});
-    try { localStorage.setItem(CACHE_KEY, s); } catch (e) {}
-    if (s !== JSON.stringify(cached || {})) { C = mergeContent(res.content || {}); onUpdate(); }
-  });
-}
-
 // ---------- 共通の枠 ----------
-function openContact(e) {
+function openLink(kind, e) {
   if (e) e.preventDefault();
-  const url = safeUrl(C.site.marshmallowUrl);
+  const url = safeUrl(LINKS[kind]);
   if (url) window.open(url, '_blank', 'noopener');
-  else toast('お問い合わせは準備中です');
+  else toast((kind === 'request' ? '資料請求' : 'お問い合わせ') + 'は準備中です');
 }
 function toggleMenu(force) {
   const open = typeof force === 'boolean' ? force : !document.body.classList.contains('menu-open');
@@ -277,8 +174,8 @@ function renderShell(page) {
   rail.innerHTML = `
     <button class="menu-btn" type="button" aria-expanded="false" aria-label="メニュー" onclick="toggleMenu()"><span class="bars"><i></i><i></i><i></i></span><span class="l">MENU</span></button>
     <hr>
-    <a href="request.html">${mi('description')}資料請求</a>
-    <a href="#" onclick="openContact(event)">${mi('mail')}お問い合わせ</a>
+    <a href="#" onclick="openLink('request', event)">${mi('description')}資料請求</a>
+    <a href="#" onclick="openLink('contact', event)">${mi('mail')}お問い合わせ</a>
     <div class="tail">${star()}</div>`;
 
   let menu = document.querySelector('.menu');
@@ -286,8 +183,9 @@ function renderShell(page) {
   const items = [{ file: 'index.html', ja: 'トップ', en: 'TOP' }].concat(PAGES);
   menu.innerHTML = `<nav class="menu-list">
     ${items.map((p, i) => `<a href="${p.file}" style="transition-delay:${.05 + i * .04}s"><b>${esc(p.ja)}</b><span>${esc(p.en)}</span></a>`).join('')}
-    <a href="#" onclick="openContact(event)" style="transition-delay:${.05 + items.length * .04}s"><b>お問い合わせ</b><span>CONTACT</span></a>
-    ${safeUrl(s.notebookUrl) ? `<a href="${esc(safeUrl(s.notebookUrl))}" target="_blank" rel="noopener" style="transition-delay:${.09 + items.length * .04}s"><b>レッスン手帳</b><span>LESSON NOTE</span></a>` : ''}
+    <a href="#" onclick="openLink('request', event)" style="transition-delay:${.05 + items.length * .04}s"><b>資料請求</b><span>REQUEST</span></a>
+    <a href="#" onclick="openLink('contact', event)" style="transition-delay:${.09 + items.length * .04}s"><b>お問い合わせ</b><span>CONTACT</span></a>
+    ${safeUrl(LINKS.notebook) ? `<a href="${esc(safeUrl(LINKS.notebook))}" target="_blank" rel="noopener" style="transition-delay:${.13 + items.length * .04}s"><b>レッスン手帳</b><span>LESSON NOTE</span></a>` : ''}
   </nav>`;
 
   let footer = document.querySelector('.site-footer');
@@ -295,9 +193,8 @@ function renderShell(page) {
   footer.innerHTML = `
     <img src="img/emblem.png" alt="">
     <div class="nm">${esc(s.name)}</div><div class="en">${esc(s.en)}</div>
-    <nav>${items.map(p => `<a href="${p.file}">${esc(p.ja)}</a>`).join('')}<a href="#" onclick="openContact(event)">お問い合わせ</a></nav>
-    <small>${esc(s.copyright)}</small>
-    <a class="adm" href="admin.html">管理</a>`;
+    <nav>${items.map(p => `<a href="${p.file}">${esc(p.ja)}</a>`).join('')}<a href="#" onclick="openLink('request', event)">資料請求</a><a href="#" onclick="openLink('contact', event)">お問い合わせ</a></nav>
+    <small>${esc(s.copyright)}</small>`;
 }
 function pageHero(page) {
   const p = PAGES.find(x => x.id === page);
@@ -354,8 +251,8 @@ const RENDER = {
         ${secHead('INFORMATION', h.linksTitle)}
         <div class="cards c4 links">${links.map(l => `<a class="card link-card reveal" href="${l[0]}">${mi(l[1])}<b>${esc(l[2])}</b><span>${l[3]}</span></a>`).join('')}</div>
         <div class="cards c2" style="margin-top:28px">
-          <a class="card link-card reveal" href="request.html">${mi('description')}<b>資料請求</b><span>REQUEST</span></a>
-          <a class="card link-card reveal" href="#" onclick="openContact(event)">${mi('mail')}<b>お問い合わせ</b><span>CONTACT</span></a>
+          <a class="card link-card reveal" href="#" onclick="openLink('request', event)">${mi('description')}<b>資料請求</b><span>REQUEST</span></a>
+          <a class="card link-card reveal" href="#" onclick="openLink('contact', event)">${mi('mail')}<b>お問い合わせ</b><span>CONTACT</span></a>
         </div>
       </div></section>`;
   },
@@ -404,7 +301,7 @@ const RENDER = {
   },
 
   life() {
-    const l = C.life, url = safeUrl(C.site.notebookUrl);
+    const l = C.life, url = safeUrl(LINKS.notebook);
     return pageHero('life') + `
       <section class="section"><div class="wrap">
         ${secHead('DAILY SCHEDULE', '1日の流れ')}
@@ -438,7 +335,7 @@ const RENDER = {
   },
 
   admission() {
-    const a = C.admission, url = safeUrl(C.site.notebookUrl);
+    const a = C.admission, url = safeUrl(LINKS.notebook);
     return pageHero('admission') + `
       <section class="section"><div class="wrap">
         ${secHead('GUIDELINES', '募集要項')}
@@ -451,24 +348,9 @@ const RENDER = {
         <p class="lead reveal" style="margin:44px 0 30px">${esc(a.note)}</p>
         <p class="center reveal" style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center">
           ${url ? `<a class="btn gold" href="${esc(url)}" target="_blank" rel="noopener">入学願書（レッスン手帳）${mi('open_in_new')}</a>` : ''}
-          <a class="btn" href="request.html">資料請求${mi('arrow_forward')}</a>
-          <a class="btn line" href="#" onclick="openContact(event)">お問い合わせ${mi('mail')}</a>
+          <a class="btn" href="#" onclick="openLink('request', event)">資料請求${mi('arrow_forward')}</a>
+          <a class="btn line" href="#" onclick="openLink('contact', event)">お問い合わせ${mi('mail')}</a>
         </p>
-      </div></section>`;
-  },
-
-  request() {
-    return pageHero('request') + `
-      <section class="section"><div class="wrap">
-        ${secHead('REQUEST', '資料請求')}
-        <p class="lead reveal" style="margin-bottom:40px">${esc(C.request.lead)}</p>
-        <form class="form reveal" id="req-form" onsubmit="sendRequest(event)">
-          <div class="field"><label for="f-name">お名前<span class="req">必須</span></label><input id="f-name" maxlength="40" required autocomplete="off"></div>
-          <div class="field"><label for="f-kumi">気になる組</label><select id="f-kumi"><option value="">まだ決めていない</option>${KUMI.map(k => `<option>${esc(k.name)}</option>`).join('')}</select></div>
-          <div class="field"><label for="f-contact">ご連絡先（オープンチャットでのお名前など）<span class="req">必須</span></label><input id="f-contact" maxlength="80" required autocomplete="off"></div>
-          <div class="field"><label for="f-msg">ひとこと・ご質問</label><textarea id="f-msg" maxlength="1000"></textarea></div>
-          <p class="center" style="margin:30px 0 0"><button class="btn" type="submit" id="f-send">送信する${mi('send')}</button></p>
-        </form>
       </div></section>`;
   },
 
@@ -487,21 +369,6 @@ const RENDER = {
   }
 };
 
-function sendRequest(e) {
-  e.preventDefault();
-  const v = id => document.getElementById(id).value.trim();
-  const body = { name: v('f-name'), kumi: v('f-kumi'), contact: v('f-contact'), message: v('f-msg') };
-  if (!body.name || !body.contact) return toast('お名前とご連絡先を入力してください');
-  const btn = document.getElementById('f-send'); btn.disabled = true; btn.style.opacity = '.6';
-  api('addRequest', body).then(res => {
-    btn.disabled = false; btn.style.opacity = '';
-    if (!res || !res.ok) return toast((res && res.error) || '送信できませんでした');
-    const f = document.getElementById('req-form');
-    f.innerHTML = `<div class="thanks">${star()}<h3>送信しました</h3><p class="prose" style="margin:0">${esc(C.request.done)}</p>
-      <p style="margin:28px 0 0"><a class="btn line" href="index.html">トップへ戻る</a></p></div>`;
-  });
-}
-
 // ---------- ふわっと表示 ----------
 let revealObs = null;
 function setupReveal() {
@@ -515,11 +382,8 @@ function setupReveal() {
 function renderPage() {
   const app = document.getElementById('app');
   const page = app.dataset.page;
-  // 送信フォームの入力中に描き直さない
-  if (page === 'request' && document.getElementById('req-form') && app.dataset.drawn) { renderShell(page); return; }
   renderShell(page);
   app.innerHTML = RENDER[page] ? RENDER[page]() : '';
-  app.dataset.drawn = '1';
   if (page === 'news') {
     const id = new URLSearchParams(location.search).get('id');
     const n = id && (C.news || []).find(x => String(x.id) === id);
@@ -533,5 +397,5 @@ function renderPage() {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') toggleMenu(false); });
 document.addEventListener('click', e => { if (document.body.classList.contains('menu-open') && e.target.closest('.menu-list a')) toggleMenu(false); });
 if (document.getElementById('app')) {
-  document.addEventListener('DOMContentLoaded', () => { renderPage(); loadContent(renderPage); });
+  document.addEventListener('DOMContentLoaded', renderPage);
 }

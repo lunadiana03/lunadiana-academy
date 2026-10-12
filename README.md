@@ -5,11 +5,18 @@
 ## 公開
 GitHub の Settings → Pages → Branch を `main` / `/ (root)` にして保存。
 
-## 管理画面（文章の書き換え）
-1. 新しいスプレッドシートを作り、拡張機能 → Apps Script に `GAS.gs` を貼り付けて保存
-2. デプロイ → 新しいデプロイ → ウェブアプリ（実行ユーザー：自分 / アクセス：全員）
-3. 出てきたURLを `js/common.js` の `API_URL` に入れる
-4. スプレッドシートの「設定」シートで `adminPassword` を `changeme` 以外に変える
-5. サイト下の「管理」から入る
+## リンクの設定
+`js/common.js` の一番上にある `LINKS` にURLを貼ります。
 
-GASを直したときは「デプロイを管理 → 鉛筆 → 新しいバージョン」で同じURLのまま更新できます。
+```js
+const LINKS = {
+  request: '',  // 資料請求（リットリンク）
+  contact: '',  // お問い合わせ（マシュマロ）
+  notebook: 'https://lunadiana03.github.io/LunaDianaSchool/' // レッスン手帳
+};
+```
+
+`''` の間にURLを入れてください（例：`request: 'https://lit.link/xxxx',`）。空のあいだはボタンを押すと「準備中です」と出ます。
+
+## 文章の変更
+同じ `js/common.js` の `const C = {` 以下に、ページごとの文章・お知らせ・進路実績が書いてあります。
